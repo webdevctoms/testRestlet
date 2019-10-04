@@ -3,10 +3,12 @@ const express = require('express');
 const {PORT} = require('./config');
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
+const {checkKey} = require('./tools/configTools');
 const {router:postRouter} = require('./routers/postReceive');
 const app = express();
 
-app.use(jsonParser);
+app.use(checkKey);
+//app.use(jsonParser);
 app.use('/order',postRouter);
 
 let server;

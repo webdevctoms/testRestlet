@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "node": "^12.11.0",
     "oauth-signature": "^1.5.0",
+    "raw-body": "^2.4.1",
     "request": "^2.88.0"
   }
 }

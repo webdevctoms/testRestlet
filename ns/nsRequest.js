@@ -17,12 +17,6 @@ function nsRequest(authInfo,url,scriptType,requestMethod){
 function getRequest(authInfo,url,scriptNum){
 	let promise = new Promise((resolve,reject) => {
 		
-		/*
-		let authString = 'OAuth + realm=' + authInfo.account_id  + ',oauth_consumer_key='  + authInfo.consumer_key + ',oauth_consumer_secret' + authInfo.consumer_secret + ',oauth_token=' + authInfo.access_token + ''
-		*/
-		//const newUrl = url + 
-		console.log('make request');
-		
 		let options = {
 			url,
 			method:'GET',

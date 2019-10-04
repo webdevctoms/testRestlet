@@ -7,3 +7,4 @@ exports.ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 exports.TOKEN_SECRET=process.env.TOKEN_SECRET;
 exports.NONCE=process.env.NONCE;
 exports.URL=process.env.URL;
+exports.CKEY = process.env.CKEY;
