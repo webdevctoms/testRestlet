@@ -19,7 +19,7 @@ router.post('/',(req,res)=>{
 	};
 	console.log('order id',req.order.email);
 	//console.log(req.body);
-	return nsRequest(authInfo,URL,'test','get')
+	return nsRequest(authInfo,URL,'get-record-post','post')
 
 	.then(data => {
 		return res.json({
