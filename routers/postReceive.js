@@ -29,6 +29,7 @@ router.post('/',(req,res)=>{
 	})
 
 	.catch(err => {
+		console.log('error posting order: ',err);
 		return res.json({
 			status:500,
 			err
