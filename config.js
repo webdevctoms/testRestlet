@@ -8,3 +8,4 @@ exports.TOKEN_SECRET=process.env.TOKEN_SECRET;
 exports.NONCE=process.env.NONCE;
 exports.URL=process.env.URL;
 exports.CKEY = process.env.CKEY;
+exports.DOMAIN = process.env.DOMAIN;
