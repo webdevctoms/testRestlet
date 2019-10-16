@@ -21,15 +21,16 @@ router.post('/',(req,res)=>{
 	console.log('order id',req.order.email);
 	console.log(convertData(req.order));
 	const nsOrder = convertData(req.order);
-	//console.log(req.body);
+	//issue is that shopify expecting a response
+	res.send({
+		status:200,
+		message:"Order received"
+	});
 	return nsRequest(authInfo,URL,'create-so','post',nsOrder)
 
 	.then(data => {
 		console.log('ns order data: ', data);
-		return res.json({
-			status:200,
-			data
-		})
+		
 	})
 
 	.catch(err => {
