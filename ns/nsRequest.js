@@ -1,6 +1,5 @@
 const request = require("request");
 const oauthsignature = require('oauth-signature');
-const {convertData} = require ('../Shopify/shopifyConfig');
 
 function nsRequest(authInfo,url,scriptType,requestMethod){
 	if(scriptType === undefined){
@@ -100,7 +99,7 @@ function postSO(authInfo,url,scriptNum){
 function postRequest(authInfo,url,scriptNum){
 	let promise = new Promise((resolve,reject) => {
 		try{
-			convertData();
+			
 			let options = {
 				url,
 				method:'POST',
