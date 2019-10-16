@@ -7,7 +7,7 @@ function convertData(shopifyData){
 //build line item arr for order
 function buildLineItemArr(lineItems){
     let nsItems = [];
-    console.log('shopify line items: ',lineItems[1].price_set);
+    console.log('shopify line items: ',lineItems);
     for (let i = 0; i < lineItems.length; i++) {
         const shopifyItem = lineItems[i];
         let singleItem = {};
@@ -49,7 +49,9 @@ function buildOrderData(shopifyData){
     //checck this also
     orderData.otherrefnum = shopifyData.order_number;
     orderData.items = buildLineItemArr(shopifyData.line_items);
-
+    orderData.extraData = {
+        taxProvince:shopifyData.shipping_address.province
+    };
     return orderData;
 }
 
