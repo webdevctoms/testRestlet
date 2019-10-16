@@ -1,6 +1,7 @@
 function convertData(shopifyData){
     let nsData = {};
-    nsData.order = buildOrderData(shopifyData)
+    nsData.order = buildOrderData(shopifyData);
+    nsData.customer = buildCustomerData(shopifyData);
     console.log('convert data');
     return nsData;
 }
@@ -53,6 +54,39 @@ function buildOrderData(shopifyData){
         taxProvince:shopifyData.shipping_address.province
     };
     return orderData;
+}
+
+function buildAddressBook(addressData){
+    let addressbook = {};
+    
+    addressbook.country = addressData.country_code;
+    addressbook.city = addressData.city;
+    addressbook.state = addressData.province;
+    addressbook.addr1 = addressData.address1;
+    if(addressData.address2){
+        addressbook.addr2 = addressData.address2;  
+    }
+    addressbook.attention = addressData.name;
+    addressbook.addressee = addressData.name;
+    addressbook.zip = addressData.zip;
+
+    return addressbook;
+}
+
+
+function buildCustomerData(shopifyData){
+    let customerData = {};
+
+    customerData.recordtype = 'customer';
+    customerData.email = shopifyData.email;
+    customerData.isperson = 'T';
+    customerData.firstname = shopifyData.shipping_address.first_name;
+    customerData.lastname = shopifyData.shipping_address.last_name;
+    //for now hard coded since it is required by NS 2 = retail 5 = online price
+    customerData.category = 2;
+    customerData.pricelevel = 5;
+    customerData.addressbook = buildAddressBook(shopifyData.shipping_address);
+    return customerData;
 }
 
 module.exports = {convertData};
