@@ -7,8 +7,8 @@ const {nsRequest} = require('../ns/nsConfig');
 const {checkKey} = require('../tools/configTools');
 const {convertData} = require ('../Shopify/shopifyConfig');
 
-//router.use(jsonParser);
 
+//respond to webhook
 router.post('/',(req,res)=>{
 	console.log('post received');
 	const authInfo = {
@@ -20,10 +20,12 @@ router.post('/',(req,res)=>{
 	};
 	console.log('order id',req.order.email);
 	console.log(convertData(req.order));
+	const nsOrder = convertData(req.order);
 	//console.log(req.body);
-	return nsRequest(authInfo,URL,'get-record-post','post')
+	return nsRequest(authInfo,URL,'create-so','post',nsOrder)
 
 	.then(data => {
+		console.log('ns order data: ', data);
 		return res.json({
 			status:200,
 			data

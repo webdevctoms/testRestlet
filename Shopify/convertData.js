@@ -11,6 +11,9 @@ function buildLineItemArr(lineItems){
     console.log('shopify line items: ',lineItems);
     for (let i = 0; i < lineItems.length; i++) {
         const shopifyItem = lineItems[i];
+        if(!shopifyItem.sku){
+            continue;
+        }
         let singleItem = {};
         //need to match up shopify item codes with netsuite 
         singleItem.item = shopifyItem.sku;
@@ -43,7 +46,7 @@ function buildOrderData(shopifyData){
     orderData.memo = 'Shopify - Web Order';
     orderData.shipaddress = buildAddressString(shopifyData.shipping_address);
     //get shopify shipping code will need to test out with real orders
-    orderData.shipmethod = shopifyData.shipping_lines[0].code;
+    orderData.shipmethod = shopifyData.shipping_lines[0].code ? shopifyData.shipping_lines[0].code : "No Shipping";
     orderData.shippingcost = shopifyData.shipping_lines[0].price_set.shop_money.amount;
     //console.log(shopifyData.shipping_lines);
     orderData.billaddress = buildAddressString(shopifyData.billing_address);
