@@ -53,23 +53,23 @@ function postSO(authInfo,url,scriptNum){
 	let promise = new Promise((resolve,reject) => {
 		try{
 			let options = {
-			url,
-			method:'POST',
-			oauth:{
-				consumer_key:authInfo.consumer_key,
-				consumer_secret:authInfo.consumer_secret,
-				token:authInfo.access_token,
-				token_secret:authInfo.token_secret,
-				realm:authInfo.realm
-			},
-			qs:{
-				script:scriptNum,
-				deploy:'1'
-			},
-			json:{ 
-				recordtype: 'salesorder',
-				id: '254174'
-			}
+				url,
+				method:'POST',
+				oauth:{
+					consumer_key:authInfo.consumer_key,
+					consumer_secret:authInfo.consumer_secret,
+					token:authInfo.access_token,
+					token_secret:authInfo.token_secret,
+					realm:authInfo.realm
+				},
+				qs:{
+					script:scriptNum,
+					deploy:'1'
+				},
+				json:{ 
+					recordtype: 'salesorder',
+					id: '254174'
+				}
 			};
 
 			console.log('POST');
@@ -99,6 +99,7 @@ function postSO(authInfo,url,scriptNum){
 function postRequest(authInfo,url,scriptNum){
 	let promise = new Promise((resolve,reject) => {
 		try{
+			
 			let options = {
 				url,
 				method:'POST',

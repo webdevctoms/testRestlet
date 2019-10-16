@@ -1,3 +1,3 @@
 const {nsRequest} = require('./nsRequest');
 
-module.exports = {nsRequest}
+module.exports = {nsRequest};

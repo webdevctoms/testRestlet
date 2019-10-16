@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const {nsRequest} = require('../ns/nsConfig');
 const {checkKey} = require('../tools/configTools');
+const {convertData} = require ('../Shopify/shopifyConfig');
 
 //router.use(jsonParser);
 
@@ -18,6 +19,7 @@ router.post('/',(req,res)=>{
 		realm:ACCOUNT_ID
 	};
 	console.log('order id',req.order.email);
+	console.log(convertData(req.order));
 	//console.log(req.body);
 	return nsRequest(authInfo,URL,'get-record-post','post')
 
