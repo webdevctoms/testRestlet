@@ -86,6 +86,7 @@ function buildCustomerData(shopifyData){
     customerData.category = 2;
     customerData.pricelevel = 5;
     customerData.addressbook = buildAddressBook(shopifyData.shipping_address);
+    
     return customerData;
 }
 
