@@ -1,3 +1,3 @@
-const {convertData} = require('./convertData').default;
+const {convertData} = require('./convertData');
 
 module.exports = {convertData};
