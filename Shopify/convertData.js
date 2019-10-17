@@ -21,7 +21,7 @@ function buildLineItemArr(lineItems){
         //for now hard coded this will = online price
         //discuss if NS should handle pricing or take pricing from Shopify
         singleItem.price = 5;
-        //verify if this is individual price or price of quantity
+        //individual product price
         singleItem.rate = shopifyItem.price;
         nsItems.push(singleItem);
     }
@@ -51,7 +51,7 @@ function buildOrderData(shopifyData){
     //console.log(shopifyData.shipping_lines);
     orderData.billaddress = buildAddressString(shopifyData.billing_address);
     //checck this also
-    orderData.otherrefnum = String(shopifyData.order_number);
+    orderData.otherrefnum = shopifyData.name;
     orderData.items = buildLineItemArr(shopifyData.line_items);
     orderData.extraData = {
         taxProvince:shopifyData.shipping_address.province

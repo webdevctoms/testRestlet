@@ -19,8 +19,9 @@ router.post('/',(req,res)=>{
 		realm:ACCOUNT_ID
 	};
 	console.log('order id',req.order.email);
-	console.log(convertData(req.order));
+	
 	const nsOrder = convertData(req.order);
+	console.log(nsOrder);
 	//issue is that shopify expecting a response
 	res.send({
 		status:200,
