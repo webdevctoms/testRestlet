@@ -7,8 +7,8 @@ const {nsRequest} = require('../ns/nsConfig');
 const {checkKey} = require('../tools/configTools');
 const {convertData} = require ('../Shopify/shopifyConfig');
 
-//router.use(jsonParser);
 
+//respond to webhook
 router.post('/',(req,res)=>{
 	console.log('post received');
 	const authInfo = {
@@ -19,15 +19,19 @@ router.post('/',(req,res)=>{
 		realm:ACCOUNT_ID
 	};
 	console.log('order id',req.order.email);
-	console.log(convertData(req.order));
-	//console.log(req.body);
-	return nsRequest(authInfo,URL,'get-record-post','post')
+	
+	const nsOrder = convertData(req.order);
+	console.log(nsOrder);
+	//issue is that shopify expecting a response
+	res.send({
+		status:200,
+		message:"Order received"
+	});
+	return nsRequest(authInfo,URL,'create-so','post',nsOrder)
 
 	.then(data => {
-		return res.json({
-			status:200,
-			data
-		})
+		console.log('ns order data: ', data);
+		
 	})
 
 	.catch(err => {

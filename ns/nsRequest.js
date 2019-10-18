@@ -1,21 +1,31 @@
 const request = require("request");
 const oauthsignature = require('oauth-signature');
 
-function nsRequest(authInfo,url,scriptType,requestMethod){
+function nsRequest(authInfo,url,scriptType,requestMethod,bodyData){
 	if(scriptType === undefined){
 		scriptType = 'test';
+	}
+	//send test data
+	if(bodyData === undefined){
+		bodyData = { 
+			"recordtype": "salesorder",
+			"id": "254174"
+		};
+		scriptType = 'get-record-post';
+		requestMethod = 'post';
 	}
 	scriptType = scriptType.toLowerCase();
 
 	let scriptMap = {
 		'test':'112',
-		'get-record-post':'113'
+		'get-record-post':'113',
+		'create-so':'114'
 	};
 	if(requestMethod.toLowerCase() === 'get'){
 		return getRequest(authInfo,url,scriptMap[scriptType])
 	}
 	else if(requestMethod.toLowerCase() === 'post'){
-		return postRequest(authInfo,url,scriptMap[scriptType])
+		return postRequest(authInfo,url,scriptMap[scriptType],bodyData)
 	}
 }
 
@@ -95,8 +105,8 @@ function postSO(authInfo,url,scriptNum){
 
 	return promise;
 }
-
-function postRequest(authInfo,url,scriptNum){
+//can use this function for most post requests
+function postRequest(authInfo,url,scriptNum,bodyData){
 	let promise = new Promise((resolve,reject) => {
 		try{
 			
@@ -114,17 +124,14 @@ function postRequest(authInfo,url,scriptNum){
 					script:scriptNum,
 					deploy:'1'
 				},
-				json:{ 
-					recordtype: 'salesorder',
-					id: '254174'
-				}
+				json:bodyData
 			};
 
-			console.log('POST');
+			console.log('POST to NS');
 			request(options,function(error,response,body){
 				try{
-					let parsedBody = JSON.parse(body)
-					console.log(parsedBody.type,error);
+					//let parsedBody = JSON.parse(body)
+					console.log(body,error);
 					resolve(body);
 				}
 				catch(err){
