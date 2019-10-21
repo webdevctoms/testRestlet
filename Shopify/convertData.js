@@ -53,7 +53,7 @@ function buildAddressBook(addressData){
     
     addressbook.country = addressData.country_code;
     addressbook.city = addressData.city;
-    addressbook.state = addressData.province;
+    addressbook.state = addressData.province ? addressData.province : "no province";
     addressbook.addr1 = addressData.address1;
     if(addressData.address2){
         addressbook.addr2 = addressData.address2;  
