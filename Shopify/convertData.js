@@ -54,7 +54,7 @@ function buildOrderData(shopifyData){
     orderData.otherrefnum = shopifyData.name;
     orderData.items = buildLineItemArr(shopifyData.line_items);
     orderData.extraData = {
-        taxProvince:shopifyData.shipping_address.province
+        taxProvince:shopifyData.shipping_address.province ? shopifyData.shipping_address.province : "none"
     };
     return orderData;
 }
