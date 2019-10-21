@@ -28,15 +28,6 @@ function buildLineItemArr(lineItems){
     console.log('Item array: ',nsItems);
     return nsItems;
 }
-//build address string for order
-function buildAddressString(addressData){ 
-    if(!addressData.address2){
-        addressData.address2 = "";
-    }
-    const shippingString = `${addressData.address1} ${addressData.address2} ${addressData.zip}-${addressData.city}, ${addressData.province}, ${addressData.country}`;
-
-    return shippingString;
-}
 
 function buildOrderData(shopifyData){
     let orderData = {};
@@ -44,17 +35,15 @@ function buildOrderData(shopifyData){
     orderData.recordtype = 'salesorder';
     orderData.email = shopifyData.email;
     orderData.memo = 'Shopify - Web Order';
-    orderData.shipaddress = buildAddressString(shopifyData.shipping_address);
+    orderData.shippingaddress = buildAddressBook(shopifyData.shipping_address);
     //get shopify shipping code will need to test out with real orders
     orderData.shipmethod = shopifyData.shipping_lines[0].code ? shopifyData.shipping_lines[0].code : "No Shipping";
     orderData.shippingcost = shopifyData.shipping_lines[0].price_set.shop_money.amount;
-    //console.log(shopifyData.shipping_lines);
-    orderData.billaddress = buildAddressString(shopifyData.billing_address);
-    //checck this also
+    orderData.billingaddress = buildAddressBook(shopifyData.billing_address);
     orderData.otherrefnum = shopifyData.name;
     orderData.items = buildLineItemArr(shopifyData.line_items);
     orderData.extraData = {
-        taxProvince:shopifyData.shipping_address.province ? shopifyData.shipping_address.province : "none"
+        taxProvince:shopifyData.shipping_address.province ? shopifyData.shipping_address.province : "no province or state"
     };
     return orderData;
 }
