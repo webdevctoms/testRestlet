@@ -59,52 +59,6 @@ function getRequest(authInfo,url,scriptNum){
 	return promise;
 }
 
-function postSO(authInfo,url,scriptNum){
-	let promise = new Promise((resolve,reject) => {
-		try{
-			let options = {
-				url,
-				method:'POST',
-				oauth:{
-					consumer_key:authInfo.consumer_key,
-					consumer_secret:authInfo.consumer_secret,
-					token:authInfo.access_token,
-					token_secret:authInfo.token_secret,
-					realm:authInfo.realm
-				},
-				qs:{
-					script:scriptNum,
-					deploy:'1'
-				},
-				json:{ 
-					recordtype: 'salesorder',
-					id: '254174'
-				}
-			};
-
-			console.log('POST');
-			request(options,function(error,response,body){
-				try{
-					let parsedBody = JSON.parse(body)
-					console.log(parsedBody.type,error);
-					resolve(body);
-				}
-				catch(err){
-					console.log('error after creating SO');
-					reject(err);
-				}
-				
-			});
-		}
-		catch(err){
-			console.log('error before SO request');
-			reject(err);
-		}
-		
-	});
-
-	return promise;
-}
 //can use this function for most post requests
 function postRequest(authInfo,url,scriptNum,bodyData){
 	let promise = new Promise((resolve,reject) => {

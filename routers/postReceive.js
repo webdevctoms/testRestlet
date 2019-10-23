@@ -31,7 +31,6 @@ router.post('/',(req,res)=>{
 
 	.then(data => {
 		console.log('ns order data: ', data);
-		
 	})
 
 	.catch(err => {

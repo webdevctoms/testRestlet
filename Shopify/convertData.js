@@ -2,9 +2,19 @@ function convertData(shopifyData){
     let nsData = {};
     nsData.order = buildOrderData(shopifyData);
     nsData.customer = buildCustomerData(shopifyData);
-    console.log('convert data');
+    console.log('convert data',shopifyData.tax_lines);
     return nsData;
 }
+
+function buildExtraTaxLine(taxData){
+    let taxLine = {};
+    taxLine.item = 'MISC - Account 25500 - 5% GST',
+    taxLine.quantity = 1;
+    taxLine.price = "";
+    taxLine.rate = taxData.price;
+    return taxLine;
+}
+
 //build line item arr for order
 function buildLineItemArr(lineItems){
     let nsItems = [];
@@ -42,9 +52,16 @@ function buildOrderData(shopifyData){
     orderData.billingaddress = buildAddressBook(shopifyData.billing_address);
     orderData.otherrefnum = shopifyData.name;
     orderData.items = buildLineItemArr(shopifyData.line_items);
+    let taxData = shopifyData.tax_lines.filter(taxLine => taxLine.title !== 'GST');
+    if(taxData.length > 0){
+        taxData = taxData[0];
+        orderData.items.push(buildExtraTaxLine(taxData));
+        orderData.memo += ` extra tax charged: ${taxData.title} at a rate of: ${Math.round(taxData.rate * 100)}%`;
+    }
     orderData.extraData = {
         taxProvince:shopifyData.shipping_address.province ? shopifyData.shipping_address.province : "no province or state"
     };
+    orderData.paymentmethod = "";
     return orderData;
 }
 
