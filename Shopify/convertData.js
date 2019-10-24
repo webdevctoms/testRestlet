@@ -52,7 +52,7 @@ function buildOrderData(shopifyData){
     orderData.billingaddress = buildAddressBook(shopifyData.billing_address);
     orderData.otherrefnum = shopifyData.name;
     orderData.items = buildLineItemArr(shopifyData.line_items);
-    let taxData = shopifyData.tax_lines.filter(taxLine => taxLine.title !== 'GST');
+    let taxData = shopifyData.tax_lines.filter(taxLine => taxLine.title !== 'GST' && taxLine.title !== 'HST');
     if(taxData.length > 0){
         taxData = taxData[0];
         orderData.items.push(buildExtraTaxLine(taxData));
