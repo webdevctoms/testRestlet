@@ -1,3 +1,4 @@
 const {checkKey} = require('./checkKey');
+const {sanitizeInput} = require('./sanitizeInput');
 
-module.exports = {checkKey};
+module.exports = {checkKey,sanitizeInput};

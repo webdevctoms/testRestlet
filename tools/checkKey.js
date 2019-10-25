@@ -1,6 +1,7 @@
 const {CKEY,DOMAIN,CKEYU,DOMAINU} = require('../config');
 const crypto = require('crypto');
 const getRawBody = require('raw-body');
+const {sanitizeInput} = require('./configTools');
 
 let checkKey = async function(req, res, next){
 
@@ -18,6 +19,7 @@ let checkKey = async function(req, res, next){
 	else if(sKey === digest || sKey === digestU){
 		const order = JSON.parse(body.toString())
 		req.order = order
+		sanitizeInput(req.order);
 		next();
 	}
 	else{
