@@ -16,8 +16,9 @@ let checkKey = async function(req, res, next){
 		});
 	}
 	else if(sKey === digest || sKey === digestU){
-		const order = JSON.parse(body.toString())
-		req.order = order
+		const order = JSON.parse(body.toString());
+		req.order = order;
+		console.log('verified');
 		next();
 	}
 	else{

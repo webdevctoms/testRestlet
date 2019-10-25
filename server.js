@@ -7,7 +7,7 @@ const {checkKey} = require('./tools/configTools');
 const {router:postRouter} = require('./routers/postReceive');
 const app = express();
 
-app.use(checkKey);
+//app.use(checkKey);
 //app.use(jsonParser);
 app.use('/order',postRouter);
 

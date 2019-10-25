@@ -1,15 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const {CONSUMER_KEY,CONSUMER_SECRET,APPLICATION_ID,ACCOUNT_ID,ACCESS_TOKEN,TOKEN_SECRET,NONCE,SIG,URL} = require('../config');
-const bodyParser = require("body-parser");
-const jsonParser = bodyParser.json();
 const {nsRequest} = require('../ns/nsConfig');
 const {checkKey} = require('../tools/configTools');
 const {convertData} = require ('../Shopify/shopifyConfig');
 
-
 //respond to webhook
-router.post('/',(req,res)=>{
+router.post('/',checkKey,(req,res)=>{
 	console.log('post received');
 	const authInfo = {
 		consumer_key:CONSUMER_KEY,
