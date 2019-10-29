@@ -17,16 +17,33 @@ let checkKey = async function(req, res, next){
 			});
 		}
 		else if(sKey === digest || sKey === digestU){
-			const order = JSON.parse(body.toString())
-			req.order = order
+			const order = JSON.parse(body.toString());
+			req.order = order;
 			let keys = {
 				shipping_address:{
 					type:'object',
-					keysArray:['address1']
+					keysArray:['address1','first_name','phone','city','zip','province','country','last_name','address2','company','latitude','longitude','name','country_code','province_code']
+				},
+				billing_address:{
+					type:"object",
+					keysArray:['address1','first_name','phone','city','zip','province','country','last_name','address2','company','latitude','longitude','name','country_code','province_code']
+				},
+				email:{
+					type:'email',
+					value:req.order.email
 				}
 			};
-			sanitizeInput(req.order,keys);
-			next();
+			let checkEmail = sanitizeInput(req.order,keys);
+			console.log('checkEmail',checkEmail);
+			if(!checkEmail){
+				return res.status(422).json({
+					code:422,
+					message:"unathorized"
+				});
+			}
+			else{
+				next();
+			}
 		}
 		else{
 			return res.status(422).json({
