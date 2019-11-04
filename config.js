@@ -11,3 +11,4 @@ exports.CKEY = process.env.CKEY;
 exports.DOMAIN = process.env.DOMAIN;
 exports.CKEYU = process.env.CKEYU;
 exports.DOMAINU = process.env.DOMAINU;
+exports.CK = process.env.CK;

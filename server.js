@@ -4,12 +4,14 @@ const {PORT} = require('./config');
 //const {checkKey} = require('./tools/configTools');
 const {router:postRouter} = require('./routers/postReceive');
 const {router:inventoryRouter} = require('./routers/inventoryRouter');
+const {router:getTokenRouter} = require('./routers/getTokenRouter');
 const app = express();
 
 //app.use(checkKey);
 //app.use(jsonParser);
 app.use('/order',postRouter);
 app.use('/inventory',inventoryRouter);
+app.use('/token',getTokenRouter);
 
 let server;
 
