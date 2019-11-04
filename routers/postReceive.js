@@ -9,7 +9,7 @@ const {convertData} = require ('../Shopify/shopifyConfig');
 
 
 //respond to webhook
-router.post('/',(req,res)=>{
+router.post('/',checkKey,(req,res)=>{
 	console.log('post received');
 	const authInfo = {
 		consumer_key:CONSUMER_KEY,

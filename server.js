@@ -1,15 +1,15 @@
 require('dotenv').config();
 const express = require('express');
 const {PORT} = require('./config');
-const bodyParser = require("body-parser");
-const jsonParser = bodyParser.json();
-const {checkKey} = require('./tools/configTools');
+//const {checkKey} = require('./tools/configTools');
 const {router:postRouter} = require('./routers/postReceive');
+const {router:inventoryRouter} = require('./routers/inventoryRouter');
 const app = express();
 
-app.use(checkKey);
+//app.use(checkKey);
 //app.use(jsonParser);
 app.use('/order',postRouter);
+app.use('/inventory',inventoryRouter);
 
 let server;
 
