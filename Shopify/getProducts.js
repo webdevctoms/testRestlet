@@ -44,16 +44,17 @@ function getProducts(requestOptions,page,dataArray){
                 limit = requestOptions.limit;
             }
             let newUrl = requestOptions.url + requestOptions.endpoint + '.json?' + 'limit=' + limit;
-            if(page){
-                newUrl += "&page=" + page;
+            if(!page){
+                page = 1;
             }
+            newUrl += "&page=" + page;
             if(requestOptions.fields){
                 let fields = buildFieldString(requestOptions.fields);
                 newUrl += fields;
             }
             
             const authKey = Buffer.from(requestOptions.key + ':' + requestOptions.pass).toString('base64');
-            console.log(newUrl);
+            console.log('Getting products: ',newUrl);
             let options = {
                 url:newUrl,
                 headers:{
@@ -69,8 +70,14 @@ function getProducts(requestOptions,page,dataArray){
                 else{
                     const parsedBody = JSON.parse(body);
                     const type = getParsedData(parsedBody);
-                    dataArray.push(parsedBody[type]);
-                    resolve(dataArray);
+                    if(parsedBody[type].length !== 0){
+                        dataArray.push(parsedBody[type]);
+                        resolve(getProducts(requestOptions,page + 1,dataArray))
+                    }
+                    else{
+                        resolve(dataArray);
+                    }
+                    
                 }
                 
             });
