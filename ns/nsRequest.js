@@ -1,5 +1,4 @@
 const request = require("request");
-const oauthsignature = require('oauth-signature');
 
 function nsRequest(authInfo,url,scriptType,requestMethod,bodyData){
 	if(scriptType === undefined){

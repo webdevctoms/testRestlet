@@ -12,3 +12,6 @@ exports.DOMAIN = process.env.DOMAIN;
 exports.CKEYU = process.env.CKEYU;
 exports.DOMAINU = process.env.DOMAINU;
 exports.CK = process.env.CK;
+exports.SHOPIFYCAD = process.env.SHOPIFYCAD;
+exports.SHOPIFYK = process.env.SHOPIFYK;
+exports.SHOPIFYP = process.env.SHOPIFYP;

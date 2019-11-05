@@ -9,13 +9,13 @@ router.get('/',checkRequest,(req,res) => {
 		const token = jwt.sign({
 			data:'token'
 		},CK,{expiresIn:'10m'});
-		res.send({
+		return res.send({
 			status:200,
 			token
 		});
 	}
 	catch(err){
-		res.send({
+		return res.send({
 			status:500,
 			err
 		})
