@@ -18,7 +18,8 @@ function nsRequest(authInfo,url,scriptType,requestMethod,bodyData){
 	let scriptMap = {
 		'test':'112',
 		'get-record-post':'113',
-		'create-so':'114'
+		'create-so':'114',
+		'get-quantity':'116'
 	};
 	if(requestMethod.toLowerCase() === 'get'){
 		return getRequest(authInfo,url,scriptMap[scriptType])

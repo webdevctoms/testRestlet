@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const {GetProductData} = require ('../Shopify/shopifyConfig');
 const {SHOPIFYCAD,SHOPIFYK,SHOPIFYP} = require('../config');
+const {GetInventoryData} = require('../ns/nsConfig');
 
 router.use(jsonParser);
 
@@ -25,9 +26,14 @@ router.post('/',checkToken,(req,res) => {
 
 	.then(productData => {
 		console.log('Got Products from Shopify : ',productData.length);
+		return GetInventoryData(productData)
+	})
+
+	.then(inventoryData => {
+		console.log('Inventory data : ',inventoryData.length);
 		return res.send({
 			status:200,
-			data:productData
+			data:inventoryData
 		});
 	})
 
