@@ -25,7 +25,6 @@ router.post('/',checkToken,(req,res) => {
 
 	.then(productData => {
 		console.log('Got Products from Shopify : ',productData.length);
-		console.log('Got Products from Shopify : ',productData[productData.length - 1].length);
 		return res.send({
 			status:200,
 			data:productData

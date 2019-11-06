@@ -26,6 +26,18 @@ function getParsedData(parsedBody){
 
     return false;
 }
+//convert seperate array data into a single array
+function normalizeData(arr){
+    let normalizedArr = [];
+
+    for(let i = 0;i < arr.length;i++){
+        for(let k = 0;k < arr[i].length;k++){
+            normalizedArr.push(arr[i][k]);
+        }
+    }
+
+    return normalizedArr;
+}
 
 function getProducts(requestOptions,page,dataArray){
     if(dataArray === undefined){
@@ -63,21 +75,27 @@ function getProducts(requestOptions,page,dataArray){
             };
 
             request(options,function(error,response,body){
-                if(error){
-                    console.log('error: ',error);
-                    reject(error);
-                }
-                else{
-                    const parsedBody = JSON.parse(body);
-                    const type = getParsedData(parsedBody);
-                    if(parsedBody[type].length !== 0){
-                        dataArray.push(parsedBody[type]);
-                        resolve(getProducts(requestOptions,page + 1,dataArray))
+                try{
+                    if(error){
+                        console.log('error: ',error);
+                        reject(error);
                     }
                     else{
-                        resolve(dataArray);
+                        const parsedBody = JSON.parse(body);
+                        const type = getParsedData(parsedBody);
+                        if(parsedBody[type].length !== 0){
+                            dataArray.push(parsedBody[type]);
+                            resolve(getProducts(requestOptions,page + 1,dataArray))
+                        }
+                        else{
+                            dataArray = normalizeData(dataArray);
+                            resolve(dataArray);
+                        }
+                        
                     }
-                    
+                }
+                catch(err){
+                    reject(error);
                 }
                 
             });
