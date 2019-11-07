@@ -1,4 +1,4 @@
 const {convertData} = require('./convertData');
-const {GetProductData} = require('./getProducts');
+const {GetProductData,normalizeData} = require('./getProducts');
 
-module.exports = {convertData,GetProductData};
+module.exports = {convertData,GetProductData,normalizeData};

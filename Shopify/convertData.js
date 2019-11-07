@@ -35,7 +35,7 @@ function buildLineItemArr(lineItems){
         singleItem.rate = shopifyItem.price;
         nsItems.push(singleItem);
     }
-    console.log('Item array: ',nsItems);
+    //console.log('Item array: ',nsItems);
     return nsItems;
 }
 

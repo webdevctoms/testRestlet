@@ -84,6 +84,7 @@ function getProducts(requestOptions,page,dataArray){
                         const parsedBody = JSON.parse(body);
                         const type = getParsedData(parsedBody);
                         if(parsedBody[type].length !== 0){
+                            console.log('==========Product length: ',parsedBody[type].length)
                             dataArray.push(parsedBody[type]);
                             resolve(getProducts(requestOptions,page + 1,dataArray))
                         }
@@ -108,4 +109,4 @@ function getProducts(requestOptions,page,dataArray){
     return promise;
 }
 
-module.exports = {GetProductData};
+module.exports = {GetProductData,normalizeData};

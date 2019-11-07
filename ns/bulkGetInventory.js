@@ -13,39 +13,40 @@ function getVariantQuantity(variants,variantIndex,variantData){
         variantData = [];
     }
     let promise = new Promise((resolve,reject) => {
-        const authInfo = {
-            consumer_key:CONSUMER_KEY,
-            consumer_secret:CONSUMER_SECRET,
-            access_token:ACCESS_TOKEN,
-            token_secret:TOKEN_SECRET,
-            realm:ACCOUNT_ID
-        };
-        let currentVariant = variants[variantIndex];
-        let reqData = {
-            item:currentVariant.sku
-        };
-        console.log('getting data for: ',currentVariant.sku);
-        return nsRequest(authInfo,URL,'get-quantity','post',reqData)
-
-        .then(quantity => {
-            console.log('variant quantity: ',quantity);
-            variantData.push({
-                variant_id: currentVariant.id,
-                inventory_quantity:quantity   
-            });
-
-            if(variantIndex < variantData.length && variantIndex + 1 !== variantData.length){
-                resolve(getVariantQuantity(variants,variantIndex + 1,variantData));
-            }
-            else{
+        if(variantIndex < variants.length){
+            const authInfo = {
+                consumer_key:CONSUMER_KEY,
+                consumer_secret:CONSUMER_SECRET,
+                access_token:ACCESS_TOKEN,
+                token_secret:TOKEN_SECRET,
+                realm:ACCOUNT_ID
+            };
+            let currentVariant = variants[variantIndex];
+            let reqData = {
+                item:currentVariant.sku
+            };
+            console.log('getting data for: ',currentVariant.sku);
+            return nsRequest(authInfo,URL,'get-quantity','post',reqData)
+    
+            .then(quantity => {
+                console.log('variant quantity: ',quantity);
+                variantData.push({
+                    variant_id: currentVariant.id,
+                    inventory_quantity:quantity   
+                });
+        
                 resolve(variantData);
-            }
-        })
-
-        .catch(err => {
-            console.log('error getting variant quantity: ',err);
-            reject(err);
-        })
+            })
+    
+            .catch(err => {
+                console.log('error getting variant quantity: ',err);
+                reject(err);
+            });
+        }
+        else{
+            resolve(variantData);
+        }
+        
     });
 
     return promise;
@@ -60,27 +61,28 @@ function GetInventoryData(productData,productIndex,data){
     }
 
     let promise = new Promise((resolve,reject) => {
-        let currentProduct = productData[productIndex];
-        let product = {};
-        product.id = currentProduct.id;
-        console.log('=================get data for: ',currentProduct.title);
-        return getVariantQuantity(currentProduct.variants)
+        if(productIndex < productData.length){
+            let currentProduct = productData[productIndex];
+            let product = {};
+            product.id = currentProduct.id;
+            console.log('=================get data for: ',currentProduct.title);
+            return getVariantQuantity(currentProduct.variants)
 
-        .then(variantData => {
-            const variants = buildVariantData(variantData);
-            if(productIndex < productData.length && productIndex + 1 !== productData.length){
+            .then(variantData => {
+                const variants = buildVariantData(variantData);
                 product.variants = variants;
                 data.push(product);
                 resolve(GetInventoryData(productData,productIndex + 1,data));
-            }
-            else{
-                resolve(data);
-            }
-        })
 
-        .catch(err => {
-            reject(err);
-        })
+            })
+
+            .catch(err => {
+                reject(err);
+            });
+        }
+        else{
+            resolve(data);
+        }
 
     });
 
