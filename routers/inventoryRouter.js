@@ -33,13 +33,13 @@ router.post('/',checkToken,(req,res) => {
 		const half = Math.round(productData.length / 2);
 		const halfProducts1 = productData.slice(0,half);
 		const halfProducts2 = productData.slice(half,productData.length);
-		//return Promise.all([GetInventoryData(halfProducts1),GetInventoryData(halfProducts2)])
-		return GetInventoryData(productData)
+		return Promise.all([GetInventoryData(halfProducts1),GetInventoryData(halfProducts2)])
+		//return GetInventoryData(productData)
 	})
 
 	.then(inventoryData => {
 		endTime = Date.now();
-		//inventoryData = normalizeData(inventoryData);
+		inventoryData = normalizeData(inventoryData);
 		console.log('==Inventory data==: ',inventoryData.length);
 		let end = endTime - startTime;
 		console.log('==Time elapsed==: ',end);

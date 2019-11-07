@@ -70,6 +70,7 @@ function GetInventoryData(productData,productIndex,data){
 
             .then(variantData => {
                 const variants = buildVariantData(variantData);
+                console.log('variant data: ',variants);
                 product.variants = variants;
                 data.push(product);
                 resolve(GetInventoryData(productData,productIndex + 1,data));
