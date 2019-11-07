@@ -1,6 +1,5 @@
 const {CONSUMER_KEY,CONSUMER_SECRET,ACCOUNT_ID,ACCESS_TOKEN,TOKEN_SECRET,URL} = require('../config');
 const {nsRequest} = require('./nsRequest');
-const {normalizeData} = require ('../Shopify/shopifyConfig');
 //convert data to data for shopify request
 function buildVariantData(variantData){
     return [];
@@ -29,33 +28,35 @@ function getVariantQuantity(variants,variantIndex,variantData){
                     variant_id: currentVariant.id,
                     inventory_quantity:0   
                 });
-
+                console.log('no sku');
                 resolve(getVariantQuantity(variants,variantIndex + 1,variantData));
             }
-            let reqData = {
-                item:currentVariant.sku
-            };
-            console.log('getting data for: ',currentVariant.sku);
-            return nsRequest(authInfo,URL,'get-quantity','post',reqData)
-    
-            .then(quantity => {
-                console.log('variant quantity: ',quantity);
-                if(!quantity){
-                    quantity = 0;
-                }
-
-                variantData.push({
-                    variant_id: currentVariant.id,
-                    inventory_quantity:quantity   
-                });
+            else{
+                let reqData = {
+                    item:currentVariant.sku
+                };
+                console.log('getting data for: ',currentVariant.sku);
+                return nsRequest(authInfo,URL,'get-quantity','post',reqData)
         
-                resolve(getVariantQuantity(variants,variantIndex + 1,variantData));
-            })
+                .then(quantity => {
+                    console.log('variant quantity: ',quantity);
+                    if(!quantity){
+                        quantity = 0;
+                    }
     
-            .catch(err => {
-                console.log('error getting variant quantity: ',err);
-                reject(err);
-            });
+                    variantData.push({
+                        variant_id: currentVariant.id,
+                        inventory_quantity:quantity   
+                    });
+            
+                    resolve(getVariantQuantity(variants,variantIndex + 1,variantData));
+                })
+        
+                .catch(err => {
+                    console.log('error getting variant quantity: ',err);
+                    reject(err);
+                });
+            }
         }
         else{
             resolve(variantData);
@@ -83,7 +84,6 @@ function GetInventoryData(productData,productIndex,data){
             return getVariantQuantity(currentProduct.variants)
 
             .then(variantData => {
-                variantData = normalizeData(variantData);
                 const variants = buildVariantData(variantData);
                 console.log('variant data: ',variantData);
                 product.variants = variants;
