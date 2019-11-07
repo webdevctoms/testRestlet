@@ -30,10 +30,12 @@ router.post('/',checkToken,(req,res) => {
 	.then(productData => {
 		startTime = Date.now();
 		console.log('Got Products from Shopify : ',productData.length);
-		const half = Math.round(productData.length / 2);
-		const halfProducts1 = productData.slice(0,half);
-		const halfProducts2 = productData.slice(half,productData.length);
-		return Promise.all([GetInventoryData(halfProducts1),GetInventoryData(halfProducts2)])
+		const third = Math.round(productData.length / 3);
+		const twoThird = third * 2;
+		const third1 = productData.slice(0,third);
+		const third2 = productData.slice(third,twoThird);
+		const third3 = productData.slice(twoThird,productData.length);
+		return Promise.all([GetInventoryData(third1),GetInventoryData(third2),GetInventoryData(third3)])
 		//return GetInventoryData(productData)
 	})
 

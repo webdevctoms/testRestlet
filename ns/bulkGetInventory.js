@@ -1,5 +1,6 @@
 const {CONSUMER_KEY,CONSUMER_SECRET,ACCOUNT_ID,ACCESS_TOKEN,TOKEN_SECRET,URL} = require('../config');
 const {nsRequest} = require('./nsRequest');
+const {normalizeData} = require ('../Shopify/shopifyConfig');
 //convert data to data for shopify request
 function buildVariantData(variantData){
     return [];
@@ -22,6 +23,15 @@ function getVariantQuantity(variants,variantIndex,variantData){
                 realm:ACCOUNT_ID
             };
             let currentVariant = variants[variantIndex];
+            //if no sku push variant with 0
+            if(!currentVariant.sku){
+                variantData.push({
+                    variant_id: currentVariant.id,
+                    inventory_quantity:0   
+                });
+
+                resolve(getVariantQuantity(variants,variantIndex + 1,variantData));
+            }
             let reqData = {
                 item:currentVariant.sku
             };
@@ -30,12 +40,16 @@ function getVariantQuantity(variants,variantIndex,variantData){
     
             .then(quantity => {
                 console.log('variant quantity: ',quantity);
+                if(!quantity){
+                    quantity = 0;
+                }
+
                 variantData.push({
                     variant_id: currentVariant.id,
                     inventory_quantity:quantity   
                 });
         
-                resolve(variantData);
+                resolve(getVariantQuantity(variants,variantIndex + 1,variantData));
             })
     
             .catch(err => {
@@ -65,12 +79,13 @@ function GetInventoryData(productData,productIndex,data){
             let currentProduct = productData[productIndex];
             let product = {};
             product.id = currentProduct.id;
-            console.log('=================get data for: ',currentProduct.title);
+            console.log('=================get data for: ',currentProduct.title,productIndex);
             return getVariantQuantity(currentProduct.variants)
 
             .then(variantData => {
+                variantData = normalizeData(variantData);
                 const variants = buildVariantData(variantData);
-                console.log('variant data: ',variants);
+                console.log('variant data: ',variantData);
                 product.variants = variants;
                 data.push(product);
                 resolve(GetInventoryData(productData,productIndex + 1,data));
