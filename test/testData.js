@@ -3,14 +3,13 @@ const chaiHttp = require('chai-http');
 const jwt = require('jsonwebtoken');
 const { app, runServer, closeServer } = require('../server');
 const {CK} = require('../config');
-const {GetProductData} = require ('../Shopify/shopifyConfig');
+const {GetProductData,normalizeData} = require ('../Shopify/shopifyConfig');
 const {SHOPIFYCAD,SHOPIFYK,SHOPIFYP} = require('../config');
-const {reqInventory} = require('./reqInventory');
+const {GetInventoryData} = require('../ns/nsConfig');
 const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe("Compare Shopify and NS data",function(){
-    let currentToken;
     let products;
 
     before(function(){
@@ -26,7 +25,7 @@ describe("Compare Shopify and NS data",function(){
     });
 
     it('Should get all shopify products',function(){
-        this.timeout(5000);
+        this.timeout(10000);
         const options = {
             url:SHOPIFYCAD,
             key:SHOPIFYK,
@@ -61,7 +60,6 @@ describe("Compare Shopify and NS data",function(){
             const token = tokenData.body.token;
             try{
                 const decoded = jwt.verify(token, CK);
-                currentToken = token;
                 //console.log(decoded);
                 expect(decoded.data).to.equal('token');
                 done();
@@ -83,38 +81,28 @@ describe("Compare Shopify and NS data",function(){
             }
         });
     });
-   /*
-   it('Should get all data',function(done){
-        this.timeout(1400000);
-        console.log('current token: ',currentToken);
-        chai.request(app)
-        .post('/inventory')
-        .send({
-            token:currentToken
-        })
 
-        .end((err,res) => {
-            console.log('===============resp body1=============',err);
-            console.log('===============resp body=============',res);
-            done();
-        });
-        
-        .catch(err => {
-            console.log(err);
-            if(err instanceof chai.AssertionError){
-                throw err;
-            }
-        });
-        
-    });
-    */
     it('Should get all data',function(){
+        let startTime;
+	    let endTime;
         this.timeout(1400000);
-        console.log('current token: ',currentToken);
-        return reqInventory(currentToken)
 
-        .then(res => {
-            console.log('===============resp body=============',res);
+        startTime = Date.now();
+        const third = Math.round(products.length / 3);
+		const twoThird = third * 2;
+		const third1 = products.slice(0,third);
+		const third2 = products.slice(third,twoThird);
+        const third3 = products.slice(twoThird,products.length);
+        return Promise.all([GetInventoryData(third1),GetInventoryData(third2),GetInventoryData(third3)])
+
+        .then(inventoryData => {
+            endTime = Date.now();
+            let end = endTime - startTime;
+            console.log('==Time elapsed==: ',end);
+            
+            inventoryData = normalizeData(inventoryData);
+            console.log('===============inventoryDatap body=============',inventoryData.length);
+            expect(products.length).to.equal(inventoryData.length);
         })
 
         .catch(err => {
@@ -124,6 +112,6 @@ describe("Compare Shopify and NS data",function(){
             }
 
             throw err;
-        })
+        });
     });
 });
