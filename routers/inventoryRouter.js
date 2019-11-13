@@ -11,7 +11,6 @@ router.use(jsonParser);
 
 router.post('/',checkToken,(req,res) => {
 	//for measuring promise time
-	//about 7 min with single promise
 	let startTime;
 	let endTime;
 	const options = {
@@ -24,7 +23,7 @@ router.post('/',checkToken,(req,res) => {
 		],
 		endpoint:'products'
 	};
-
+	//get all products
 	return GetProductData(options)
 
 	.then(productData => {

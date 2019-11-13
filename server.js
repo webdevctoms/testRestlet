@@ -15,7 +15,7 @@ app.use('/token',getTokenRouter);
 
 let server;
 
-function runServer( databaseUrl, port = PORT) {
+function runServer(port = PORT) {
   return new Promise((resolve, reject) => {
       server = app.listen(port, () => {
         console.log(`Your app is listening on port ${port}`);
