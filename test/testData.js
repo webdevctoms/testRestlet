@@ -88,29 +88,31 @@ describe("Compare Shopify and NS data",function(){
         let startTime;
 	    let endTime;
         this.timeout(1400000);
-        const sample = products.slice(40,100);
+        //const sample = products.slice(40,100);
         startTime = Date.now();
         const third = Math.round(products.length / 3);
 		const twoThird = third * 2;
 		const third1 = products.slice(0,third);
 		const third2 = products.slice(third,twoThird);
         const third3 = products.slice(twoThird,products.length);
-        //return Promise.all([GetInventoryData(third1),GetInventoryData(third2),GetInventoryData(third3)])
-        return GetInventoryData(sample)
+        return Promise.all([GetInventoryData(third1),GetInventoryData(third2),GetInventoryData(third3)])
+        //return GetInventoryData(sample)
 
         .then(inventoryData => {
             endTime = Date.now();
             let end = endTime - startTime;
             console.log('==Time elapsed==: ',end);
 
-            //inventoryData = normalizeData(inventoryData);
+            inventoryData = normalizeData(inventoryData);
             console.log('===============inventoryDatap body=============',inventoryData.length);
-            //expect(products.length).to.equal(inventoryData.length);
+            expect(products.length).to.equal(inventoryData.length);
             //inventoryData[inventoryData.length - 1].variants.push({id:123});
-            let errors = testProductData(products.slice(40,100),inventoryData);
+            //inventoryData[0].variants.push({id:123});
+            let errors = testProductData(products,inventoryData);
             //let errors = testProductData(products.slice(0,2),inventoryData);
             console.log('===============errors=============',errors.length);
             console.log(errors);
+            //inventoryData[inventoryData.length - 1].variants.push({id:123});
             expect(errors.length).to.equal(0);
         })
 

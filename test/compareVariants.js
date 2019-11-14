@@ -24,6 +24,7 @@ function compareVariants(shopifyVariants,constructedVariants){
 //return false if everything matches
 //return reason for error if doesn't match
 function compareProducts(shopifyProduct,constructedProduct){
+    console.log('variant lengths: ',shopifyProduct.variants.length, constructedProduct.variants.length);
     if(shopifyProduct.variants.length !== constructedProduct.variants.length){
         console.log('shopify Product: ',shopifyProduct.variants);
         console.log('constructed Product: ',constructedProduct.variants);

@@ -36,6 +36,7 @@ function putData(options,index){
         const endpoint = options.endpoint;
         const dataId = findValue(target,'id');
         const url = options.url.endsWith('/') ? url + endpoint + '/' + dataId + '.json' : url + '/' + endpoint + '/' + dataId + '.json' ;
+        console.log(url);
         let jsonData = {};
         jsonData[type] = findData(data,options.fields);
         const reqOptions = {
@@ -56,7 +57,7 @@ function putData(options,index){
             }
             else{
                 console.log('finished put requests');
-                resolve(body);
+                resolve('finished adding data');
             }
         })
     });

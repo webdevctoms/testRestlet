@@ -42,11 +42,25 @@ router.post('/',checkToken,(req,res) => {
 		endTime = Date.now();
 		inventoryData = normalizeData(inventoryData);
 		console.log('==Inventory data==: ',inventoryData.length);
-		let end = endTime - startTime;
+		const end = endTime - startTime;
 		console.log('==Time elapsed==: ',end);
+		let options = {
+			requestMethod:'PUT',
+			key:SHOPIFYK,
+			pass:SHOPIFYP,
+			type:'product',
+			endpoint:'products',
+			url:SHOPIFYCAD,
+			data:inventoryData
+		};
+		
+		return ShopifyRequest(options)
+	})
+
+	.then(result => {
 		return res.send({
 			status:200,
-			data:inventoryData
+			data:result
 		});
 	})
 
