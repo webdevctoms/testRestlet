@@ -3,7 +3,7 @@ const router = express.Router();
 const {checkToken} = require('../tools/configTools'); 
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
-const {GetProductData,normalizeData} = require ('../Shopify/shopifyConfig');
+const {GetProductData,normalizeData,ShopifyRequest} = require ('../Shopify/shopifyConfig');
 const {SHOPIFYCAD,SHOPIFYK,SHOPIFYP} = require('../config');
 const {GetInventoryData} = require('../ns/nsConfig');
 
