@@ -35,21 +35,24 @@ function putData(options,index){
         const type = options.type;
         const endpoint = options.endpoint;
         const dataId = findValue(target,'id');
-        const url = options.url.endsWith('/') ? url + endpoint + '/' + dataId + '.json' : url + '/' + endpoint + '/' + dataId + '.json' ;
+        const url = options.url.endsWith('/') ? options.url + endpoint + '/' + dataId + '.json' : options.url + '/' + endpoint + '/' + dataId + '.json';
         console.log(url);
         let jsonData = {};
-        jsonData[type] = findData(data,options.fields);
+        jsonData[type] = findData(target,options.fields);
+        console.log('JSON DATA: ',jsonData);
         const reqOptions = {
             url,
+            method:options.requestMethod,
             headers:{
                 'Authorization':'Basic ' + authKey
             },
             json:jsonData
         };
-
+        console.log(reqOptions);
         request(reqOptions,function(error,response,body){
             if(body.errors){
                 reject(body.errors);
+                return;
             }
             console.log('=================put data')
             if(index < data.length - 1){

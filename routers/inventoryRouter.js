@@ -51,7 +51,8 @@ router.post('/',checkToken,(req,res) => {
 			type:'product',
 			endpoint:'products',
 			url:SHOPIFYCAD,
-			data:inventoryData
+			data:inventoryData,
+			fields:['variants']
 		};
 		
 		return ShopifyRequest(options)
