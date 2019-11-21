@@ -10,6 +10,7 @@ const {GetInventoryData} = require('../ns/nsConfig');
 router.use(jsonParser);
 
 router.post('/',checkToken,(req,res) => {
+	console.log('Assign shopify options');
 	//for measuring promise time
 	let startTime;
 	let endTime;

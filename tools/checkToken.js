@@ -7,6 +7,7 @@ const checkToken = function(req, res, next){
         
         const decoded = jwt.verify(token, CK);
         if(decoded){
+            console.log("Access granted");
             next();
         }
         else{
