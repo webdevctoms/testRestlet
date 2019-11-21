@@ -48,7 +48,7 @@ function putData(options,index){
             },
             json:jsonData
         };
-        console.log(reqOptions);
+        //console.log(reqOptions);
         request(reqOptions,function(error,response,body){
             if(body.errors){
                 reject(body.errors);
