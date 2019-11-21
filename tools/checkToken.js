@@ -10,6 +10,7 @@ const checkToken = function(req, res, next){
             next();
         }
         else{
+            console.log("Access Denied");
             return res.status(422).json({
                 code:422,
                 message:"unathorized"
@@ -17,6 +18,7 @@ const checkToken = function(req, res, next){
         }
     }
     catch(err){
+        console.log("Access Denied");
         return res.status(422).json({
             code:422,
             message:"unathorized"

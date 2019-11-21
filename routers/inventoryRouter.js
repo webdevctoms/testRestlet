@@ -23,6 +23,7 @@ router.post('/',checkToken,(req,res) => {
 		],
 		endpoint:'products'
 	};
+	console.log('Get products from Shopify');
 	//get all products
 	return GetProductData(options)
 
